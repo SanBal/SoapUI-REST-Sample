@@ -1,9 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="7e7797d2-ec41-4466-993a-a85505b4c433" activeEnvironment="Default" name="Sample REST Project" resourceRoot="" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="1b117696-d694-4457-91d5-fafb384f82ca" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://jsonplaceholder.typicode.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://localhost:3000</con:endpoint></con:endpoints><con:resource name="Comments" path="/comments/" id="74da1c8e-bb63-44b9-b7fc-a7a249c0acf6"><con:settings/><con:parameters/><con:method name="Get Comments" id="d05225e2-4a71-4632-9810-9ad0f1509743" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Get Comments" id="6b426096-ae3a-4a74-9c4d-21f67652fbbd" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Post Comment" id="780b3a23-e7c9-4826-b675-84ad3bdca8bb" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>201</con:status><con:params/><con:element xmlns:com="https://jsonplaceholder.typicode.com/comments">com:Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Post Comment" id="c92b6a88-d2e1-48fe-baa0-1ad4185be584" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="Comment" path="/comments/{id}" id="3eeaf67c-ef19-4a2f-853a-70a3a661ba44"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="Get Comment" id="50901adf-f667-40bc-86d1-43c915d4bba0" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="https://jsonplaceholder.typicode.com/Comments/1">ns:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>Fault</con:element></con:representation><con:request name="Get Comment" id="457870aa-da18-4068-99e5-0704d8aafa78" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/Comments/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>id</con:entry></con:parameterOrder></con:request></con:method><con:method name="Put Comment" id="51510acc-f6b9-4901-b615-8e888264e622" method="PUT"><con:settings/><con:parameters/><con:request name="Put Comment" id="2f4b35eb-0850-4851-b195-85cfccd5ea56" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
-	"postId": 1,
-      "id": 1,
-      "name": "id labore ex et quam laborum",
-      "email": "Eliseo@gardner.biz",
-      "body": "laudantium"
+<con:soapui-project id="7e7797d2-ec41-4466-993a-a85505b4c433" activeEnvironment="Default" name="Sample REST Project" resourceRoot="" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="1b117696-d694-4457-91d5-fafb384f82ca" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://jsonplaceholder.typicode.com" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://localhost:3000</con:endpoint></con:endpoints><con:resource name="Comments" path="/comments/" id="74da1c8e-bb63-44b9-b7fc-a7a249c0acf6"><con:settings/><con:parameters><con:parameter><con:name>refID</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="Get Comments" id="d05225e2-4a71-4632-9810-9ad0f1509743" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Get Comments" id="6b426096-ae3a-4a74-9c4d-21f67652fbbd" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="refID" value="101" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>refID</con:entry></con:parameterOrder></con:request></con:method><con:method name="Post Comment" id="780b3a23-e7c9-4826-b675-84ad3bdca8bb" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>201</con:status><con:params/><con:element xmlns:com="https://jsonplaceholder.typicode.com/comments">com:Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html; charset=utf-8</con:mediaType><con:status>400</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="Post Comment" id="c92b6a88-d2e1-48fe-baa0-1ad4185be584" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+	 "refID":101,
+      "title": "Test",
+      "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
+	 "cars": [
+        { "name":"Ford", "models":[ "Fiesta", "Focus", "Mustang" ] },
+        { "name":"BMW", "models":[ "320", "X3", "X5" ] },
+        { "name":"Fiat", "models":[ "500", "Panda" ] }
+    ]
+}</con:request><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="refID" value="" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>refID</con:entry></con:parameterOrder></con:request></con:method></con:resource><con:resource name="Comment" path="/comments/{id}" id="3eeaf67c-ef19-4a2f-853a-70a3a661ba44"><con:settings/><con:parameters><con:parameter><con:name>id</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters><con:method name="Get Comment" id="50901adf-f667-40bc-86d1-43c915d4bba0" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="https://jsonplaceholder.typicode.com/Comments/1">ns:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>Fault</con:element></con:representation><con:request name="Get Comment" id="457870aa-da18-4068-99e5-0704d8aafa78" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/Comments/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/><con:parameterOrder><con:entry>id</con:entry></con:parameterOrder></con:request></con:method><con:method name="Put Comment" id="51510acc-f6b9-4901-b615-8e888264e622" method="PUT"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/comments/501">ns:Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Put Comment" id="2f4b35eb-0850-4851-b195-85cfccd5ea56" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
+	 "postID":101,
+      "title": "Test",
+      "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
+	 "cars": [
+        { "name":"Ford", "models":[ "Fiesta", "Focus", "Mustang" ] },
+        { "name":"BMW", "models":[ "320", "X3", "X5" ] },
+        { "name":"Fiat", "models":[ "500", "Panda" ] }
+    ]
+}</con:request><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete Comment" id="6cd3a98c-8c9c-474c-a013-b27a627f6275" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Delete Comment" id="0cd56d59-8b6c-455a-83bb-dd3acaed9d0e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="38ce0136-5b44-4490-8ffc-0811b9e5eacd" name="InitializerSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4ad62e35-1ea9-4c21-adfa-c111c8c3ad53" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Initializer" searchProperties="true"><con:settings/><con:testStep type="groovy" name="ExcelParser" id="d7e05727-3265-4d9f-bbe9-74eb195f7950"><con:settings/><con:config><script><![CDATA[import org.apache.poi.ss.usermodel.*
+import org.apache.poi.xssf.usermodel.*
+import org.apache.poi.ss.util.*
+
+class ExcelParser{   
+	def log
+	Sheet sheet
+
+	ExcelParser(paramLog, context){
+		log = paramLog
+		def FILE_PATH = context.expand('${projectDir}') + '/src/resources/TestData.xlsx'
+		log.info(FILE_PATH)
+		FileInputStream excelFile = new FileInputStream(new File(FILE_PATH));
+		Workbook workbook = new XSSFWorkbook(excelFile);
+		sheet = workbook.getSheetAt(0);
+	}
+    
+	def getTestCases() { 
+		List<TestCase> tCases = new ArrayList<>()
+		def rowCount = sheet.getLastRowNum() + 1;
+		def colCount = sheet.getRow(0).getLastCellNum();
+		//log.info(rowCount + " " + colCount);
+
+		def tCaseID = sheet.getRow(0).getCell(2).getStringCellValue()
+		def requestName = sheet.getRow(3).getCell(2).getStringCellValue()
+		def tCase = new TestCase(tCaseID, requestName)
+
+		for(int colIndex = 2; colIndex < colCount; colIndex++) {
+			def currTCaseID = sheet.getRow(0).getCell(colIndex).getStringCellValue()
+			if(!currTCaseID.isEmpty() && currTCaseID != tCase.ID){
+				tCases.add(tCase) 
+				requestName = sheet.getRow(3).getCell(colIndex).getStringCellValue()
+				tCase = new TestCase(currTCaseID, requestName)
+			}
+			for(int rowIndex = 6; rowIndex < rowCount; rowIndex++) {
+				Row row = sheet.getRow(rowIndex)
+				Cell cJsonType = row.getCell(1)
+				Cell cValue = row.getCell(colIndex)
+
+				if(cJsonType != null && cValue != null) {
+					cValue.setCellType(Cell.CELL_TYPE_STRING)
+					//log.info(cJsonType.getStringCellValue())
+					//log.info(cValue.getStringCellValue())						
+				}
+			}
+
+			if(colIndex == colCount - 1) {
+				 tCases.add(tCase) 
+			}
+		}
+	
+		return tCases                           
+	}
+
+	class TestCase{
+		String ID
+		String requestName
+		String inputData;
+		String expectedResults;
+
+		public TestCase(ID, requestName) {
+			this.ID = ID
+			this.requestName = requestName
+		}
+	}
 }
-</con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete Comment" id="6cd3a98c-8c9c-474c-a013-b27a627f6275" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Delete Comment" id="0cd56d59-8b6c-455a-83bb-dd3acaed9d0e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
+
+context.setProperty("ExcelParser", new ExcelParser(log, context))]]></script></con:config></con:testStep><con:testStep type="groovy" name="MainExecutor" id="7272188e-8323-4e0d-bd1c-ff5cfac14227"><con:settings/><con:config><script>def currProject = testRunner.testCase.testSuite.project
+currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["ExcelParser"].run(testRunner, context)
+
+
+def excelParser = context.ExcelParser
+def tCases = excelParser.getTestCases()
+printTestCases(tCases)
+
+def printTestCases(tCases) {
+	log.info("num test cases: " + tCases.size())
+	for(def tCase in tCases) {
+		log.info("test case ID: " + tCase.ID)
+		log.info("request name: " + tCase.requestName)
+		log.info("next test case")
+	}
+}
+
+</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
