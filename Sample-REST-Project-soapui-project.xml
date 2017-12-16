@@ -20,6 +20,7 @@
 }</con:request><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete Comment" id="6cd3a98c-8c9c-474c-a013-b27a627f6275" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Delete Comment" id="0cd56d59-8b6c-455a-83bb-dd3acaed9d0e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="38ce0136-5b44-4490-8ffc-0811b9e5eacd" name="InitializerSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4ad62e35-1ea9-4c21-adfa-c111c8c3ad53" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Initializer" searchProperties="true"><con:settings/><con:testStep type="groovy" name="ExcelParser" id="d7e05727-3265-4d9f-bbe9-74eb195f7950"><con:settings/><con:config><script><![CDATA[import org.apache.poi.ss.usermodel.*
 import org.apache.poi.xssf.usermodel.*
 import org.apache.poi.ss.util.*
+import javax.json.*
 
 class ExcelParser{   
 	def log
@@ -41,17 +42,25 @@ class ExcelParser{
 		//log.info(rowCount + " " + colCount);
 
 		def tCaseID = sheet.getRow(0).getCell(2).getStringCellValue()
-		def requestName = sheet.getRow(3).getCell(2).getStringCellValue()
+		def requestName = sheet.getRow(4).getCell(2).getStringCellValue()
 		def tCase = new TestCase(tCaseID, requestName)
+
+		def jObject = Json.createObjectBuilder()
+		def jArrayMap = [:]
+		def jArrayObjectsMap = [:]
+		def jArraysKeys = ['Pers']
+
+		initializeJsonArrayMap(jArrayMap, jArraysKeys)
+		initializeJsonArrayObjectsMap(jArrayObjectsMap, jArraysKeys)
 
 		for(int colIndex = 2; colIndex < colCount; colIndex++) {
 			def currTCaseID = sheet.getRow(0).getCell(colIndex).getStringCellValue()
 			if(!currTCaseID.isEmpty() && currTCaseID != tCase.ID){
-				tCases.add(tCase) 
-				requestName = sheet.getRow(3).getCell(colIndex).getStringCellValue()
+				tCases << tCase 
+				requestName = sheet.getRow(4).getCell(colIndex).getStringCellValue()
 				tCase = new TestCase(currTCaseID, requestName)
 			}
-			for(int rowIndex = 6; rowIndex < rowCount; rowIndex++) {
+			for(int rowIndex = 7; rowIndex < rowCount; rowIndex++) {
 				Row row = sheet.getRow(rowIndex)
 				Cell cJsonType = row.getCell(1)
 				Cell cValue = row.getCell(colIndex)
@@ -59,18 +68,111 @@ class ExcelParser{
 				if(cJsonType != null && cValue != null) {
 					cValue.setCellType(Cell.CELL_TYPE_STRING)
 					//log.info(cJsonType.getStringCellValue())
-					//log.info(cValue.getStringCellValue())						
+					//log.info(cValue.getStringCellValue())	
+					addValueToJsonObject(cJsonType.getStringCellValue(), cValue.getStringCellValue(), jArraysKeys, jArrayObjectsMap, jObject)					
 				}
 			}
 
+			addJsonArrayObjectsToJsonArray(jArraysKeys, jArrayObjectsMap, jArrayMap)
+			
+			Cell cNextAddContext = sheet.getRow(2).getCell(colIndex + 1)
+			log.info(tCase.ID)
+			if(cNextAddContext != null && cNextAddContext.getStringCellValue().contains("Add")) {
+				continue
+			}
+			
+			addJsonArraysToJsonObject(jArraysKeys, jArrayMap, jObject)
+			//log.info(jObject.build().toString())
+
+			Cell cContext = sheet.getRow(1).getCell(colIndex)
+			Cell cAddContext = sheet.getRow(2).getCell(colIndex)
+			def jString = jObject.build().toString()
+			if(cContext.getStringCellValue()?.trim()) {
+				//log.info(cContext.getStringCellValue())
+				addJsonToTestCase(jString, cContext.getStringCellValue(), tCase)
+			}else if(cAddContext.getStringCellValue()?.trim()) {
+				//log.info(cAddContext.getStringCellValue())
+				addJsonToTestCase(jString, cAddContext.getStringCellValue(), tCase)
+			}
+
 			if(colIndex == colCount - 1) {
-				 tCases.add(tCase) 
+				 tCases << tCase 
 			}
 		}
 	
 		return tCases                           
 	}
 
+	def addValueToJsonObject(jType, value, jArraysKeys, jArrayObjectsMap, jObject) {
+		if(isJsonTypeJsonArrayType(jArraysKeys, jType)){
+			for(key in jArraysKeys) {
+				def jArrayObject = jArrayObjectsMap."$key"
+				jType = jType.replace(key, "").toString()
+				if(jType == "plz"){
+					value = value.toInteger()
+				}else if(jType.toLowerCase().contains("date")) {
+					value = getDateString(value.toInteger())
+				}
+				jArrayObject.add(jType, value)
+			}
+		}else{
+			if(jType == "postID"){
+				value = value.toInteger()
+			}
+			jObject.add(jType, value)
+		}
+	}
+
+	def getDateString(days) {
+		def dateValue = new Date() + days
+		return dateValue.format("yyyy-MM-dd")
+	}
+
+	def initializeJsonArrayMap(jArrayMap, jArraysKeys) {
+		jArraysKeys.each {key ->
+			jArrayMap."$key" = Json.createArrayBuilder()
+		}
+	}
+
+	def initializeJsonArrayObjectsMap(jArrayObjectsMap, jArraysKeys) {
+		jArraysKeys.each {key ->
+			jArrayObjectsMap."$key" = Json.createObjectBuilder()
+		}
+	}
+
+	def isJsonTypeJsonArrayType(jArraysKeys, jType) {
+		boolean isJsonArrayType = false
+		jArraysKeys.each {key ->
+			if(jType.contains("$key")){
+				isJsonArrayType =  true
+			}
+		}
+		return isJsonArrayType
+	}
+
+	def addJsonArrayObjectsToJsonArray(jArraysKeys, jArrayObjectsMap, jArrayMap) {
+		jArraysKeys.each {key ->
+			def jArrayObject = jArrayObjectsMap."$key".build()
+			def jArray = jArrayMap."$key"
+			jArray.add(jArrayObject)
+		}
+	}
+
+	def addJsonArraysToJsonObject(jArraysKeys, jArrayMap, jObject) {
+		jArraysKeys.each {key ->
+			def jArray = jArrayMap."$key".build()
+			jObject.add("$key", jArray)
+		}
+	}
+
+	def addJsonToTestCase(jString, contextVal, tCase) {
+		if(contextVal.contains("Input")){
+			tCase.inputData = jString 
+		}else if(contextVal.contains("Result")){
+			tCase.expectedResults = jString
+		}
+	}
+	
 	class TestCase{
 		String ID
 		String requestName
@@ -87,7 +189,6 @@ class ExcelParser{
 context.setProperty("ExcelParser", new ExcelParser(log, context))]]></script></con:config></con:testStep><con:testStep type="groovy" name="MainExecutor" id="7272188e-8323-4e0d-bd1c-ff5cfac14227"><con:settings/><con:config><script>def currProject = testRunner.testCase.testSuite.project
 currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["ExcelParser"].run(testRunner, context)
 
-
 def excelParser = context.ExcelParser
 def tCases = excelParser.getTestCases()
 printTestCases(tCases)
@@ -97,6 +198,8 @@ def printTestCases(tCases) {
 	for(def tCase in tCases) {
 		log.info("test case ID: " + tCase.ID)
 		log.info("request name: " + tCase.requestName)
+		log.info("input data: " + tCase.inputData)
+		log.info("expected results: " + tCase.expectedResults)
 		log.info("next test case")
 	}
 }

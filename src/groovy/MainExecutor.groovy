@@ -1,7 +1,6 @@
 def currProject = testRunner.testCase.testSuite.project
 currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["ExcelParser"].run(testRunner, context)
 
-
 def excelParser = context.ExcelParser
 def tCases = excelParser.getTestCases()
 printTestCases(tCases)
@@ -11,6 +10,8 @@ def printTestCases(tCases) {
 	for(def tCase in tCases) {
 		log.info("test case ID: " + tCase.ID)
 		log.info("request name: " + tCase.requestName)
+		log.info("input data: " + tCase.inputData)
+		log.info("expected results: " + tCase.expectedResults)
 		log.info("next test case")
 	}
 }
