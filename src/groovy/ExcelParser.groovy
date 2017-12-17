@@ -3,11 +3,11 @@ import org.apache.poi.xssf.usermodel.*
 import org.apache.poi.ss.util.*
 import javax.json.*
 
-class ExcelParser{   
+class ExcelParser {   
 	def log
 	Sheet sheet
 
-	ExcelParser(paramLog, context){
+	ExcelParser(paramLog, context) {
 		log = paramLog
 		def FILE_PATH = context.expand('${projectDir}') + '/src/resources/TestData.xlsx'
 		log.info(FILE_PATH)
@@ -40,6 +40,10 @@ class ExcelParser{
 				tCases << tCase 
 				requestName = sheet.getRow(4).getCell(colIndex).getStringCellValue()
 				tCase = new TestCase(currTCaseID, requestName)
+				def cRefTCase = sheet.getRow(3).getCell(colIndex)
+				if(cRefTCase != null && cRefTCase.getStringCellValue() != null){
+					tCase.refTCaseID = cRefTCase.getStringCellValue()
+				}
 			}
 			for(int rowIndex = 7; rowIndex < rowCount; rowIndex++) {
 				Row row = sheet.getRow(rowIndex)
@@ -57,7 +61,7 @@ class ExcelParser{
 			addJsonArrayObjectsToJsonArray(jArraysKeys, jArrayObjectsMap, jArrayMap)
 			
 			Cell cNextAddContext = sheet.getRow(2).getCell(colIndex + 1)
-			log.info(tCase.ID)
+			//log.info(tCase.ID)
 			if(cNextAddContext != null && cNextAddContext.getStringCellValue().contains("Add")) {
 				continue
 			}
@@ -156,6 +160,7 @@ class ExcelParser{
 	
 	class TestCase{
 		String ID
+		String refTCaseID
 		String requestName
 		String inputData;
 		String expectedResults;

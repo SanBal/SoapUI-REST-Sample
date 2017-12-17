@@ -36,7 +36,8 @@ class RESTSuiteCreator {
 	
 				def config = RestRequestStepFactory.createConfig(request, request.name)
 				soapUITCase.insertTestStep(config, 0)
-				log.info(request.name)
+				soapUITCase.testSteps[request.name].addAssertion("Script Assertion")
+				//log.info(request.name)
 			}
 		}
 
