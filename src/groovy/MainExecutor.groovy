@@ -1,9 +1,13 @@
 def currProject = testRunner.testCase.testSuite.project
 currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["ExcelParser"].run(testRunner, context)
+currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["RESTSuiteCreator"].run(testRunner, context)
 
 def excelParser = context.ExcelParser
 def tCases = excelParser.getTestCases()
-printTestCases(tCases)
+//printTestCases(tCases)
+
+def creator = context.RESTSuiteCreator
+creator.executeSuiteCreation(tCases) 
 
 def printTestCases(tCases) {
 	log.info("num test cases: " + tCases.size())
