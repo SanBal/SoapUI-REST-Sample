@@ -6,7 +6,7 @@ currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["R
 
 def excelParser = context.ExcelParser
 def tCases = excelParser.getTestCases()
-//printTestCases(tCases)
+printTestCases(tCases)
 
 def creator = context.RESTSuiteCreator
 creator.executeSuiteCreation(tCases) 
@@ -25,6 +25,9 @@ def printTestCases(tCases) {
 	}
 }
 
+/**
+ * Executes the test cases of the 'RESTSuite' and compares the results.
+ */
 class MainExecutor {
 	def log
 	def context
@@ -58,22 +61,32 @@ class MainExecutor {
 			}
 		}
 
-		runTestStep(tCase.ID, testStep)
+		runTestStep(tCase, testStep)
 	}
 
-	def runTestStep(tCaseID, testStep) {
+	def runTestStep(tCase, testStep) {
 		def result = testStep.run(context.testRunner, context)
 		def status = testStep.httpRequest.response.responseHeaders["#status#"].toString()
 		def response = testStep.getPropertyValue("Response")
 
+		def jResponse = new JSONObject(response)
 		if(testStep.name.startsWith("Post") && status.contains("Created")){
-			cachePOSTResponseData(tCaseID, response)
+			cachePOSTResponseData(tCase.ID, jResponse)
 		}
+
+          def jExpectedResults = new JSONObject(tCase.expectedResults)
+          log.info('response body: ' + jResponse.get("body"))
+          log.info('expected results body:' + jExpectedResults.get("body"))
+          
+          // Compare 'body' value of actual response and expected results
+		assert jResponse.get("body") == jExpectedResults.get("body")
 	}
 
-	def cachePOSTResponseData(tCaseID, response) {
-		def jObject = new JSONObject(response)
-		restSuite.setPropertyValue(tCaseID, jObject.get("id").toString())
+     /**
+      * Caches the id of a new created comment which is necessary e.g. for a PUT request regarding this comment.
+      */
+	def cachePOSTResponseData(tCaseID, jResponse) {
+		restSuite.setPropertyValue(tCaseID, jResponse.get("id").toString())
 		project.save()
 	}
 

@@ -1,6 +1,9 @@
 import com.eviware.soapui.config.*
 import com.eviware.soapui.impl.wsdl.teststeps.registry.RestRequestStepFactory
 
+/**
+ * Creates the 'RESTSuite' with SoapUI test cases and REST steps to run the REST APIs.
+ */
 class RESTSuiteCreator {
 	def log
 	def context

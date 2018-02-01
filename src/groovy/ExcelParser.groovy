@@ -3,6 +3,11 @@ import org.apache.poi.xssf.usermodel.*
 import org.apache.poi.ss.util.*
 import javax.json.*
 
+/**
+ * Parses the excel file. 
+ * Extracts the input and expected results data and map them to a list of 'TestCase'.
+ * 
+ */
 class ExcelParser {   
 	def log
 	Sheet sheet

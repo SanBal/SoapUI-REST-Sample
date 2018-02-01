@@ -17,11 +17,16 @@
         { "name":"BMW", "models":[ "320", "X3", "X5" ] },
         { "name":"Fiat", "models":[ "500", "Panda" ] }
     ]
-}</con:request><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete Comment" id="6cd3a98c-8c9c-474c-a013-b27a627f6275" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Delete Comment" id="0cd56d59-8b6c-455a-83bb-dd3acaed9d0e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="38ce0136-5b44-4490-8ffc-0811b9e5eacd" name="InitializerSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4ad62e35-1ea9-4c21-adfa-c111c8c3ad53" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Initializer" searchProperties="true"><con:settings/><con:testStep type="groovy" name="ExcelParser" id="d7e05727-3265-4d9f-bbe9-74eb195f7950"><con:settings/><con:config><script><![CDATA[import org.apache.poi.ss.usermodel.*
+}</con:request><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method><con:method name="Delete Comment" id="6cd3a98c-8c9c-474c-a013-b27a627f6275" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Delete Comment" id="0cd56d59-8b6c-455a-83bb-dd3acaed9d0e" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>http://localhost/comments/501</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="38ce0136-5b44-4490-8ffc-0811b9e5eacd" name="InitializerSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4ad62e35-1ea9-4c21-adfa-c111c8c3ad53" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Initializer" searchProperties="true"><con:settings/><con:testStep type="groovy" name="ExcelParser" id="d7e05727-3265-4d9f-bbe9-74eb195f7950" disabled="true"><con:settings/><con:config><script><![CDATA[import org.apache.poi.ss.usermodel.*
 import org.apache.poi.xssf.usermodel.*
 import org.apache.poi.ss.util.*
 import javax.json.*
 
+/**
+ * Parses the excel file. 
+ * Extracts the input and expected results data and map them to a list of 'TestCase'.
+ * 
+ */
 class ExcelParser {   
 	def log
 	Sheet sheet
@@ -191,9 +196,12 @@ class ExcelParser {
 	}
 }
 
-context.setProperty("ExcelParser", new ExcelParser(log, context))]]></script></con:config></con:testStep><con:testStep type="groovy" name="RESTSuiteCreator" id="bc6c0486-ca68-4a66-a085-c062cd7f9f13"><con:settings/><con:config><script>import com.eviware.soapui.config.*
+context.setProperty("ExcelParser", new ExcelParser(log, context))]]></script></con:config></con:testStep><con:testStep type="groovy" name="RESTSuiteCreator" id="bc6c0486-ca68-4a66-a085-c062cd7f9f13" disabled="true"><con:settings/><con:config><script>import com.eviware.soapui.config.*
 import com.eviware.soapui.impl.wsdl.teststeps.registry.RestRequestStepFactory
 
+/**
+ * Creates the 'RESTSuite' with SoapUI test cases and REST steps to run the REST APIs.
+ */
 class RESTSuiteCreator {
 	def log
 	def context
@@ -257,7 +265,7 @@ currProject.testSuites["InitializerSuite"].testCases["Initializer"].testSteps["R
 
 def excelParser = context.ExcelParser
 def tCases = excelParser.getTestCases()
-//printTestCases(tCases)
+printTestCases(tCases)
 
 def creator = context.RESTSuiteCreator
 creator.executeSuiteCreation(tCases) 
@@ -276,6 +284,9 @@ def printTestCases(tCases) {
 	}
 }
 
+/**
+ * Executes the test cases of the 'RESTSuite' and compares the results.
+ */
 class MainExecutor {
 	def log
 	def context
@@ -309,22 +320,32 @@ class MainExecutor {
 			}
 		}
 
-		runTestStep(tCase.ID, testStep)
+		runTestStep(tCase, testStep)
 	}
 
-	def runTestStep(tCaseID, testStep) {
+	def runTestStep(tCase, testStep) {
 		def result = testStep.run(context.testRunner, context)
 		def status = testStep.httpRequest.response.responseHeaders["#status#"].toString()
 		def response = testStep.getPropertyValue("Response")
 
+		def jResponse = new JSONObject(response)
 		if(testStep.name.startsWith("Post") &amp;&amp; status.contains("Created")){
-			cachePOSTResponseData(tCaseID, response)
+			cachePOSTResponseData(tCase.ID, jResponse)
 		}
+
+          def jExpectedResults = new JSONObject(tCase.expectedResults)
+          log.info('response body: ' + jResponse.get("body"))
+          log.info('expected results body:' + jExpectedResults.get("body"))
+          
+          // Compare 'body' value of actual response and expected results
+		assert jResponse.get("body") == jExpectedResults.get("body")
 	}
 
-	def cachePOSTResponseData(tCaseID, response) {
-		def jObject = new JSONObject(response)
-		restSuite.setPropertyValue(tCaseID, jObject.get("id").toString())
+     /**
+      * Caches the id of a new created comment which is necessary e.g. for a PUT request regarding this comment.
+      */
+	def cachePOSTResponseData(tCaseID, jResponse) {
+		restSuite.setPropertyValue(tCaseID, jResponse.get("id").toString())
 		project.save()
 	}
 
@@ -333,13 +354,4 @@ class MainExecutor {
 	}
 }
 
-</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite id="9013e0e8-81df-4c1f-84ff-447efb0332ac" name="RESTSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2dc6bce7-9e1e-4049-a7c0-1ceddda8ebbb" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-1" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Post Comment" id="b606a8f4-5d8a-4269-a8f6-88ab6fd755cc"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/" methodName="Post Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Post Comment" id="c92b6a88-d2e1-48fe-baa0-1ad4185be584" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{"postID":101,"title":"Test TC-1","body":"Test one","Pers":[{"surname":"Max","lastname":"Mustermann","birthdate":"2017-12-17","plz":12345}]}</con:request><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:assertion type="GroovyScriptAssertion" id="0a1e31d8-f301-4cd9-9f62-a9a788cd7608" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="refID" value="" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>refID</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="64b1976e-772a-457f-8130-37d10c26ff8d" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-2" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get Comment" id="d323b16d-02e2-49c9-8552-2b0d8ee0b5f1"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/{id}" methodName="Get Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get Comment" id="457870aa-da18-4068-99e5-0704d8aafa78" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/Comments/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="c3301313-bdd9-4845-95c0-cc1eb81c73a3" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="547" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="c415614e-2be9-4a7e-8c94-8f4f1a5e9d3e" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-3" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Post Comment" id="652882af-b0de-47b1-a8ac-d5285ef512b8"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/" methodName="Post Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Post Comment" id="c92b6a88-d2e1-48fe-baa0-1ad4185be584" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{"postID":101,"title":"Test TC-3","body":"Test three","Pers":[{"surname":"Emiliy","lastname":"Serrano","birthdate":"2017-11-27","plz":98765},{"surname":"Porro","lastname":"Tuk","birthdate":"2017-12-27","plz":45562}]}</con:request><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:assertion type="GroovyScriptAssertion" id="5026090e-e09f-40ec-9a45-cdc725ecc182" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="refID" value="" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>refID</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="fc08ccb6-2933-401b-aff3-1168c6068ad5" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-4" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Put Comment" id="4332e0fd-0d88-48a1-8c57-7f2fcf9c234a"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/{id}" methodName="Put Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Put Comment" id="2f4b35eb-0850-4851-b195-85cfccd5ea56" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{
-	 "postID":101,
-      "title": "Test",
-      "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
-	 "cars": [
-        { "name":"Ford", "models":[ "Fiesta", "Focus", "Mustang" ] },
-        { "name":"BMW", "models":[ "320", "X3", "X5" ] },
-        { "name":"Fiat", "models":[ "500", "Panda" ] }
-    ]
-}</con:request><con:originalUri>http://localhost/comments/501</con:originalUri><con:assertion type="GroovyScriptAssertion" id="f29443ee-91a8-4a1e-b4e0-c4e0b0ee6b04" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties><con:property><con:name>TC-1</con:name><con:value>547</con:value></con:property><con:property><con:name>TC-3</con:name><con:value>548</con:value></con:property></con:properties></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
+</script></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite id="9013e0e8-81df-4c1f-84ff-447efb0332ac" name="RESTSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2dc6bce7-9e1e-4049-a7c0-1ceddda8ebbb" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-1" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Post Comment" id="b606a8f4-5d8a-4269-a8f6-88ab6fd755cc"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/" methodName="Post Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Post Comment" id="c92b6a88-d2e1-48fe-baa0-1ad4185be584" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{"postID":101,"title":"Test TC-1","body":"Test one","Pers":[{"surname":"Max","lastname":"Mustermann","birthdate":"2018-02-01","plz":12345}]}</con:request><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:assertion type="GroovyScriptAssertion" id="0a1e31d8-f301-4cd9-9f62-a9a788cd7608" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="refID" value="" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>refID</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="64b1976e-772a-457f-8130-37d10c26ff8d" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-2" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Get Comment" id="d323b16d-02e2-49c9-8552-2b0d8ee0b5f1"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/{id}" methodName="Get Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get Comment" id="457870aa-da18-4068-99e5-0704d8aafa78" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request/><con:originalUri>https://jsonplaceholder.typicode.com/Comments/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="c3301313-bdd9-4845-95c0-cc1eb81c73a3" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="507" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>id</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="c415614e-2be9-4a7e-8c94-8f4f1a5e9d3e" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-3" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Post Comment" id="652882af-b0de-47b1-a8ac-d5285ef512b8"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/" methodName="Post Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Post Comment" id="c92b6a88-d2e1-48fe-baa0-1ad4185be584" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{"postID":101,"title":"Test TC-3","body":"Test three","Pers":[{"surname":"Emiliy","lastname":"Serrano","birthdate":"2018-01-12","plz":98765},{"surname":"Porro","lastname":"Tuk","birthdate":"2018-02-11","plz":45562}]}</con:request><con:originalUri>https://jsonplaceholder.typicode.com/comments</con:originalUri><con:assertion type="GroovyScriptAssertion" id="5026090e-e09f-40ec-9a45-cdc725ecc182" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="refID" value="" xmlns="http://eviware.com/soapui/config"/></con:parameters><con:parameterOrder><con:entry>refID</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="fc08ccb6-2933-401b-aff3-1168c6068ad5" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TC-4" searchProperties="true"><con:settings/><con:testStep type="restrequest" name="Put Comment" id="4332e0fd-0d88-48a1-8c57-7f2fcf9c234a"><con:settings/><con:config service="https://jsonplaceholder.typicode.com" resourcePath="/comments/{id}" methodName="Put Comment" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Put Comment" id="2f4b35eb-0850-4851-b195-85cfccd5ea56" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:3000</con:endpoint><con:request>{"postID":102,"body":"Test four","Pers":[{}]}</con:request><con:originalUri>http://localhost/comments/501</con:originalUri><con:assertion type="GroovyScriptAssertion" id="f29443ee-91a8-4a1e-b4e0-c4e0b0ee6b04" name="Script Assertion"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="id" value="505" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:properties><con:property><con:name>TC-1</con:name><con:value>507</con:value></con:property><con:property><con:name>TC-3</con:name><con:value>508</con:value></con:property></con:properties></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
