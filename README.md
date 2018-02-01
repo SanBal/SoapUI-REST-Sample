@@ -7,7 +7,7 @@ Take a look at https://github.com/typicode/json-server for installing and runnin
 
 ### Requirements and Setup
 * Install SoapUI 5.3+
-* Add external some external jars to the binary folder of the SoapUI installation directory
+* Add external some external jars to the 'bin/ext' folder of the SoapUI installation directory
     * org.apache.poi
         * poi  
         * poi-ooxml
